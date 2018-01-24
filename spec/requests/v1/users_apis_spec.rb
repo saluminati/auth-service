@@ -7,11 +7,14 @@ RSpec.describe 'UsersApis', type: :request do
     end
 
     describe 'POST /v1_signin' do
-        it 'authenticates the user and returns a JWT AuthToken' do
+
+        it 'authenticates the user and returns a JWT token' do
             post v1_signin_path, params: {
                 auth: { email: @user.email, password: @user.password }
             }
+            json = JSON.parse(response.body)
             expect(response).to have_http_status(201)
+            expect(json['jwt']).to eq @token
         end
     end
 
@@ -30,9 +33,9 @@ RSpec.describe 'UsersApis', type: :request do
         end.to raise_error ActionController::ParameterMissing
     end
 
-    describe "POST /user_identify" do
+    describe "POST /v1_identify" do
 
-    it "validates the user identity and returns the user id" do
+    it "validates the user identity and returns JSON object contains user id" do
       post v1_identify_path, headers: {
         'Authorization': "Bearer #{@token}"
       }
