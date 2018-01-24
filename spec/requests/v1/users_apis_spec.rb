@@ -29,4 +29,23 @@ RSpec.describe 'UsersApis', type: :request do
             }
         end.to raise_error ActionController::ParameterMissing
     end
+
+    describe "POST /user_identify" do
+
+    it "validates the user identity and returns the user id" do
+      post v1_identify_path, headers: {
+        'Authorization': "Bearer #{@token}"
+      }
+      expect(response).to have_http_status(200)
+    end
+
+    it "return 401 (unautherzied) status when invalid token is provided" do
+      post v1_identify_path, headers: {
+        'Authorization': "Bearer #{Faker::Lorem.sentence(10)}"
+      }
+      expect(response).to have_http_status(401)
+    end
+
+  end
+
 end
