@@ -50,5 +50,3 @@ test:
 production:
   <<: *default
   database: auth-service_production
-  username: auth-service
-  password: <%= ENV['AUTH-SERVICE_DATABASE_PASSWORD'] %>
